@@ -31,6 +31,20 @@ describe('merge function', () => {
     expect(merge([1, 9], [0, 2, 3, 10])).toEqual([0, 1, 2, 3, 9, 10]);
     expect(merge([0, 2, 3, 10], [1, 9])).toEqual([0, 1, 2, 3, 9, 10]);
   });
+
+  it('handles a separate sorting function', () => {
+    expect(
+      merge(
+        [{ age: 1 }, { age: 2 }],
+        [{ age: 0 }, { age: 5 }],
+        function comparator(a, b) {
+          if (a.age < b.age) return -1; // returning `-1` means "a goes before b"
+          if (a.age > b.age) return 1; // returning  `1` means "b goes before a"
+          return 0; // returning 0 means "a and b are equivalent"
+        }
+      )
+    ).toEqual([{ age: 0 }, { age: 1 }, { age: 2 }, { age: 5 }]);
+  });
 });
 
 describe('merge sort function', () => {
@@ -47,7 +61,7 @@ describe('merge sort function', () => {
 
   it('works with an array of three elements', () => {
     expect(mergeSort([3, 2, 1])).toEqual([1, 2, 3]);
-  })
+  });
 
   it('returns the original array if the input is sorted', () => {
     expect(mergeSort([])).toEqual([]);
@@ -68,4 +82,18 @@ describe('merge sort function', () => {
     expect(mergeSort([5, 4, 2, 1])).toEqual([1, 2, 4, 5]);
     expect(mergeSort([1, 9, 0, 2, 3, 10])).toEqual([0, 1, 2, 3, 9, 10]);
   });
+
+  // it('handles a separate sorting function', () => {
+  //   expect(
+  //     mergeSort(
+  //       [{ age: 1 }, { age: 2 },
+  //       { age: 0 }, { age: 5 }],
+  //       function comparator(a, b) {
+  //         if (a.age < b.age) return -1; // returning `-1` means "a goes before b"
+  //         if (a.age > b.age) return 1; // returning  `1` means "b goes before a"
+  //         return 0; // returning 0 means "a and b are equivalent"
+  //       }
+  //     )
+  //   ).toEqual([{ age: 0 }, { age: 1 }, { age: 2 }, { age: 5 }]);
+  // });
 });
